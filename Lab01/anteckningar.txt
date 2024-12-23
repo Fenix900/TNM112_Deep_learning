@@ -1,0 +1,58 @@
+
+Task 1.1
+The number of epoches is how many times we go thrugh the dataset (training set)
+If we have high batch size then we will make less updates since we will use almost all data in one pass 
+so when we only do 4 epoches we end up with 4 updates when using the whole training set.
+For example when we use a batch size of 512 we have fewer iteration of SGD are performed.
+
+We can do classification without non-linear activation functions since the data is linear. 
+So the soft-max is enough
+
+Task 1.2
+* Why does linear activation not work?
+Since the data is not linear anymore and the model can only make linear predictions with lines. (y = wx + B)
+* On average, what is the best classification accuracy that can be achieved with a linear activation function?
+50%
+* Can you find an explanation for the difference comparing sigmoid and relu activation?
+It has to do with vanishing gradient, the sigmoid when reaching higher values as example for above 1 it will
+be parallel with the horizon and the gradient will then be close to zero. Meaning that the sigmoid wont be 
+giving any more information to the next layer. For relu the gradient is constant above 0 and zero below zero. 
+The gradient will be one. 
+
+Task 1.3
+* Change mean and stddev of normal initialization.
+The mean only changes where we start the weight values, but it seem to only be able to get one cluster correct.
+The standard deviation doesn't change much either, it changes how big the spread of the starting values. 
+* Change learning rate and add some momentum in SGD.
+It doesn't change anything, it still only classifies one class. But the learning rate is how big step we take in that direction
+of where the gradient is pointing, so higher will give bigger impact of where we walk in the landscape while momentum is how much we 
+keep from the previous step.
+* Check the Keras documentation for 'ExponentialDecay', which can be used to specify decaying learning rate for SGD.
+
+* You can also tweak batch size and number of epochs.
+
+What combination worked best, and what was your best classification accuracy (on the test set)? 
+mean=0.035, stddev=0.1
+epochs = 80            # Number of epochs for the training
+batch_size = 32      # Batch size to use in trainig
+lr_schedule = keras.optimizers.schedules.ExponentialDecay(
+    initial_learning_rate = 0.05, 
+    decay_steps=300,
+    decay_rate=0.7,
+    staircase=True)
+It gave an accuracy of about 75%
+Can you find any patterns in what combinations of hyper parameters work and doesn't work?
+The best combinations was the learning rate and also learning rate intital with mean value. 
+Standard deviation too big didn't work so good aswell as too small like 0. 
+The numbers of epoches was not adding so much more after we reached a good point, minima. 
+
+Task 1.4
+Continue from previous task, but change initialization to 'glorot_normal' and optimizer to 'keras.optimizers.Adam()'. 
+Does this perform better compared to your results in Task 1.3?
+yes, since we don't have to choose the learning rate and its parameters. This is done by the Adam optimizer.
+The initialization can still be set as we wish and give very good results but with glorot_normal we get better 
+distribution of starting values.
+Yes it performce better with much higher accuracy than the SGD. 
+
+Task 2
+They look the same since we import all the wights and layers
